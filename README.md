@@ -94,37 +94,103 @@ This proves the automation can detect broken API contracts before production imp
 
 ## Key Defects Found
 
-### Defect 1
+### Defect 1 — Create Booking with Missing Required Field Returns 500 Instead of 400
 
-Create Booking with missing required field returns 500 instead of expected 400
+**Affected Request Name:**
+`Create Booking - Missing Required Field`
 
-Risk:
+**Folder:**
+`03_Booking_Negative_Tests → Create Booking`
 
-Backend crashes instead of safe validation handling
+**API Endpoint:**
+`POST /booking`
+
+**Test Scenario:**
+Create booking request with missing required field (example: missing `firstname`)
+
+**Expected Result:**
+API should return `400 Bad Request` for invalid request payload with missing required fields.
+
+**Actual Result:**
+API returns `500 Internal Server Error`, which means backend crashes instead of handling validation safely.
+
+**Business Risk:**
+Invalid client requests can cause backend instability and unsafe production behavior.
+
+**Proof:**
+Newman negative test result:
+
+Expected: 400
+Actual: 500
 
 ---
 
-### Defect 2
+### Defect 2 — API Accepts Invalid Booking Date Logic
 
-API accepts invalid booking date logic
+**Affected Request Name:**
+`Negative Create Booking — Invalid Date Logic`
+
+**Folder:**
+`03_Booking_Negative_Tests → Create Booking`
+
+**API Endpoint:**
+`POST /booking`
+
+**Test Scenario:**
+Create booking where checkout date is earlier than checkin date
 
 Example:
 
-checkout date earlier than checkin date
+* Checkin: `2025-12-10`
+* Checkout: `2025-12-05`
 
-Risk:
+**Expected Result:**
+API should reject impossible booking dates with `400 Bad Request`.
 
-Impossible business bookings are allowed
+**Actual Result:**
+API returns `200 OK` and successfully creates impossible booking data.
+
+**Business Risk:**
+Invalid reservations affect hotel operations, reporting, billing, and customer trust.
+
+**Proof:**
+Newman negative test result:
+
+Expected: 400
+Actual: 200
 
 ---
 
-### Defect 3
+### Defect 3 — Update Booking Accepts Invalid totalprice Datatype
 
-Update Booking accepts invalid totalprice datatype instead of rejecting request
+**Affected Request Name:**
+`Negative Update Booking - Invalid Data Type`
 
-Risk:
+**Folder:**
+`03_Booking_Negative_Tests → Update Booking`
 
-Invalid business data enters production
+**API Endpoint:**
+`PUT /booking/{{bookingId}}`
+
+**Test Scenario:**
+Update booking using invalid datatype:
+
+`"totalprice": "expensive"`
+
+instead of numeric value.
+
+**Expected Result:**
+API should reject invalid datatype with `400 Bad Request`.
+
+**Actual Result:**
+API accepts invalid payload instead of proper validation handling.
+
+**Business Risk:**
+Invalid financial data can affect payment systems, billing, reporting, and customer trust.
+
+**Proof:**
+Negative update test confirms validation inconsistency during update flow.
+
 
 ---
 
