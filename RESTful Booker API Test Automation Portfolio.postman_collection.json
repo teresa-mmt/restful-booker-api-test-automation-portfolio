@@ -929,11 +929,7 @@
       ]
     },
     {
-      "name": "04_Contract_And_Reliability",
-      "item": []
-    },
-    {
-      "name": "05_Mock_Server_Tests",
+      "name": "04_Mock_Server_Tests",
       "item": [
         {
           "name": "Create Booking Mock Tests",
