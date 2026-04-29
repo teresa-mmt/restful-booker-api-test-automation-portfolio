@@ -199,7 +199,7 @@ Negative update test confirms validation inconsistency during update flow.
 ### Real API Tests
 
 ```bash
-newman run "RESTful Booker API Test Automation Portfolio.postman_collection.json" -e "RESTful Booker - QA Env.postman_environment.json"
+newman run "RESTful Booker API Test Automation Portfolio.postman_collection.json" -e "RESTful Booker - QA Env.postman_environment.json" --folder "01_Authentication" --folder "02_Booking_CRUD_Positive" --folder "03_Booking_Negative_Tests"
 ```
 
 ### Mock Server Tests
@@ -218,5 +218,6 @@ newman run "RESTful Booker API Test Automation Portfolio.postman_collection.json
 * Contract validation implemented
 * Defects identified and analyzed
 * Newman execution verified
+* Real API testing completed separately from contract validation testing using Postman Mock Server.
 
 This project reflects production-focused QA thinking rather than simple API checking.
